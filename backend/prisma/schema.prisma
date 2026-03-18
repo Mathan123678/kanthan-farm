@@ -1,0 +1,88 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Bird {
+  id             Int       @id @default(autoincrement())
+  name           String
+  breed          String
+  weight         Float
+  age            Int       // in months
+  color          String
+  health_status  String
+  match_ready    Boolean   @default(false)
+  buy_price      Float
+  buy_date       DateTime
+  seller         String?
+  location       String?
+  status         String    @default("Growing") // Growing, Training, ReadyForMatch, Sold
+  photo_url      String?
+  created_at     DateTime  @default(now())
+
+  sales          Sale[]
+  healthRecords  HealthRecord[]
+  matches        Match[]
+}
+
+model Sale {
+  id              Int      @id @default(autoincrement())
+  bird_id         Int      @unique
+  bird            Bird     @relation(fields: [bird_id], references: [id])
+  buyer_name      String
+  buyer_state     String
+  selling_price   Float
+  selling_date    DateTime @default(now())
+  transport_cost  Float    @default(0)
+  other_expenses  Float    @default(0)
+  profit          Float
+  notes           String?
+  created_at      DateTime @default(now())
+}
+
+model Expense {
+  id          Int      @id @default(autoincrement())
+  date        DateTime @default(now())
+  category    String   // BirdPurchase, Food, Medicine, Transport, Labour, FarmMaintenance, Other
+  amount      Float
+  description String?
+  created_at  DateTime @default(now())
+}
+
+model HealthRecord {
+  id               Int       @id @default(autoincrement())
+  bird_id          Int
+  bird             Bird      @relation(fields: [bird_id], references: [id])
+  vaccination_date DateTime
+  medicine         String?
+  doctor_name      String?
+  notes            String?
+  created_at       DateTime  @default(now())
+}
+
+model Match {
+  id             Int      @id @default(autoincrement())
+  bird_id        Int
+  bird           Bird     @relation(fields: [bird_id], references: [id])
+  match_date     DateTime
+  opponent_type  String?
+  result         String   // Win, Loss, Draw
+  notes          String?
+  created_at     DateTime @default(now())
+}
+
+model Buyer {
+  id              Int      @id @default(autoincrement())
+  name            String
+  phone           String?
+  state           String?
+  total_purchases Float    @default(0)
+  created_at      DateTime @default(now())
+}

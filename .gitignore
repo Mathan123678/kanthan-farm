@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+frontend/.env
+backend/.env
+
+# Build outputs
+dist/
+build/
+frontend/dist/
+
+# Misc
+.DS_Store
+*.log
+Downloads/
+.git/
+package-lock.json
+
+# Tooling
+.vscode/
+.idea/
