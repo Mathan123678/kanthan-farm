@@ -1,53 +1,45 @@
-## Kanthan Farm Management App
+# Kanthan Farm Management App
 
-A mobile-first farm management application for a rooster farm, built with:
+A mobile-first farm management application for a rooster farm.
 
-- **Frontend**: React + TailwindCSS
-- **Backend**: Node.js + Express
-- **Database**: PostgreSQL
-- **Charts**: Chart.js
+- **Frontend**: React + TailwindCSS → deployed on **Vercel**
+- **Backend**: Node.js + Express → deployed on **Render**
+- **Database**: PostgreSQL → hosted on **Neon**
 
-### Features
+## Live URLs
+- Frontend: https://kanthan-farm.vercel.app (update after deploy)
+- Backend API: https://kanthan-farm-api.onrender.com (update after deploy)
 
-- Bird management (add, edit, list, details, match readiness, weight progress)
-- Bird sales and per-bird profit calculation
-- Farm-wide expenses and profit/loss
-- Health records, matches, and performance stats
-- Buyers and state-wise sales
-- Inventory analytics and alerts
-- Mobile-first, farm-themed UI
+## Local Development
 
-### Project Structure
+### Backend
+```bash
+cd backend
+npm install
+# Set DATABASE_URL in .env
+npm run dev
+```
 
-- `backend/` – Node.js + Express API and PostgreSQL integration
-- `frontend/` – React + TailwindCSS single-page app
+### Frontend
+```bash
+cd frontend
+npm install
+# Set VITE_API_URL in .env
+npm run dev
+```
 
-### Getting Started
+## Environment Variables
 
-1. **Backend**
-   - Go to `backend/`
-   - Copy `.env.example` to `.env` and set `DATABASE_URL`
-   - Install dependencies:
-     - `npm install`
-   - Run database migrations (see `backend/db/schema.sql`)
-   - Start the dev server:
-     - `npm run dev`
+### Backend (.env)
+```
+DATABASE_URL=your_neon_postgresql_url
+PORT=4000
+```
 
-2. **Frontend**
-   - Go to `frontend/`
-   - Install dependencies:
-     - `npm install`
-   - Start the dev server:
-     - `npm run dev`
+### Frontend (.env)
+```
+VITE_API_URL=https://your-backend.onrender.com/api
+```
 
-### Database
-
-See `backend/db/schema.sql` for the PostgreSQL schema covering:
-
-- `birds`
-- `sales`
-- `expenses`
-- `health_records`
-- `matches`
-- `buyers`
-
+## Database Setup
+Run `backend/db/schema.sql` against your PostgreSQL database to create all tables.
