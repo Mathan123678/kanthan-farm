@@ -8,6 +8,7 @@ import {
   FileText,
   Users,
   HeartPulse,
+  Swords,
   Menu,
   X
 } from "lucide-react";
@@ -23,6 +24,7 @@ import Health from "./pages/Health";
 import Reports from "./pages/Reports";
 import Buyers from "./pages/Buyers";
 import Dashboard from "./pages/Dashboard";
+import Matches from "./pages/Matches";
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
   const location = useLocation();
@@ -33,6 +35,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     { path: "/sales", name: "Sales", icon: CircleDollarSign },
     { path: "/expenses", name: "Expenses", icon: Receipt },
     { path: "/health", name: "Health", icon: HeartPulse },
+    { path: "/matches", name: "Matches", icon: Swords },
     { path: "/reports", name: "Reports", icon: FileText },
     { path: "/buyers", name: "Buyers", icon: Users }
   ];
@@ -155,6 +158,7 @@ function AppLayout() {
               <Route path="/sales/*" element={<Sales />} />
               <Route path="/expenses/*" element={<Expenses />} />
               <Route path="/health/*" element={<Health />} />
+              <Route path="/matches/*" element={<Matches />} />
               <Route path="/reports/*" element={<Reports />} />
               <Route path="/buyers/*" element={<Buyers />} />
             </Routes>

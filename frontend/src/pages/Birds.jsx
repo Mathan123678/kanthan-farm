@@ -33,7 +33,7 @@ export default function Birds() {
     health_status: "Good",
     buy_price: "",
     buy_date: new Date().toISOString().split("T")[0],
-    photo_url: "",
+    photo: "",
   });
 
   const [imagePreview, setImagePreview] = useState(null);
@@ -48,7 +48,7 @@ export default function Birds() {
     if (file) {
       const preview = URL.createObjectURL(file);
       setImagePreview(preview);
-      setFormData({ ...formData, photo_url: preview });
+      setFormData({ ...formData, photo: preview });
     }
   };
 
@@ -75,7 +75,7 @@ export default function Birds() {
         health_status: "Good",
         buy_price: "",
         buy_date: new Date().toISOString().split("T")[0],
-        photo_url: "",
+        photo: "",
       });
       setImagePreview(null);
     } catch (err) {
@@ -172,8 +172,8 @@ export default function Birds() {
                 <tr key={bird.bird_id} className="hover:bg-gray-50 transition-colors border-t">
                   <td className="px-6 py-4 flex items-center gap-3">
                     <div className="h-10 w-10 bg-green-100 rounded-full flex items-center justify-center overflow-hidden">
-                      {bird.photo_url ? (
-                        <img src={bird.photo_url} className="h-full w-full object-cover" />
+                      {bird.photo ? (
+                        <img src={bird.photo} className="h-full w-full object-cover" />
                       ) : (
                         <span className="font-bold">{bird.name.charAt(0)}</span>
                       )}

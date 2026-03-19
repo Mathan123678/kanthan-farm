@@ -1,41 +1,40 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "postgresql://postgres:postgres@localhost:51214/template1?sslmode=disable"
 }
 
 model Bird {
-  id             Int       @id @default(autoincrement())
+  bird_id        Int       @id @default(autoincrement())
   name           String
   breed          String
   weight         Float
   age            Int       // in months
   color          String
-  health_status  String
+  health_status  String    @default("Good")
   match_ready    Boolean   @default(false)
   buy_price      Float
-  buy_date       DateTime
+  buy_date       DateTime  @default(now())
   seller         String?
   location       String?
   status         String    @default("Growing") // Growing, Training, ReadyForMatch, Sold
-  photo_url      String?
+  photo          String?
   created_at     DateTime  @default(now())
 
   sales          Sale[]
   healthRecords  HealthRecord[]
   matches        Match[]
+
+  @@map("birds")
 }
 
 model Sale {
   id              Int      @id @default(autoincrement())
   bird_id         Int      @unique
-  bird            Bird     @relation(fields: [bird_id], references: [id])
+  bird            Bird     @relation(fields: [bird_id], references: [bird_id])
   buyer_name      String
   buyer_state     String
   selling_price   Float
@@ -45,6 +44,8 @@ model Sale {
   profit          Float
   notes           String?
   created_at      DateTime @default(now())
+
+  @@map("sales")
 }
 
 model Expense {
@@ -54,28 +55,34 @@ model Expense {
   amount      Float
   description String?
   created_at  DateTime @default(now())
+
+  @@map("expenses")
 }
 
 model HealthRecord {
   id               Int       @id @default(autoincrement())
   bird_id          Int
-  bird             Bird      @relation(fields: [bird_id], references: [id])
+  bird             Bird      @relation(fields: [bird_id], references: [bird_id])
   vaccination_date DateTime
   medicine         String?
   doctor_name      String?
   notes            String?
   created_at       DateTime  @default(now())
+
+  @@map("health_records")
 }
 
 model Match {
   id             Int      @id @default(autoincrement())
   bird_id        Int
-  bird           Bird     @relation(fields: [bird_id], references: [id])
+  bird           Bird     @relation(fields: [bird_id], references: [bird_id])
   match_date     DateTime
   opponent_type  String?
   result         String   // Win, Loss, Draw
   notes          String?
   created_at     DateTime @default(now())
+
+  @@map("matches")
 }
 
 model Buyer {
@@ -85,4 +92,6 @@ model Buyer {
   state           String?
   total_purchases Float    @default(0)
   created_at      DateTime @default(now())
+
+  @@map("buyers")
 }
