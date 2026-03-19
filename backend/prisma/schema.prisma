@@ -4,94 +4,88 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:postgres@localhost:51214/template1?sslmode=disable"
+  url      = env("DATABASE_URL")
 }
 
 model Bird {
-  bird_id        Int       @id @default(autoincrement())
-  name           String
-  breed          String
-  weight         Float
-  age            Int       // in months
-  color          String
-  health_status  String    @default("Good")
-  match_ready    Boolean   @default(false)
-  buy_price      Float
-  buy_date       DateTime  @default(now())
-  seller         String?
-  location       String?
-  status         String    @default("Growing") // Growing, Training, ReadyForMatch, Sold
-  photo          String?
-  created_at     DateTime  @default(now())
+  bird_id       Int      @id @default(autoincrement())
+  name          String
+  breed         String?
+  weight        Float?
+  age           Int?
+  color         String?
+  health_status String?
+  match_ready   Boolean? @default(false)
+  buy_price     Float?
+  buy_date      DateTime? @db.Date
+  seller        String?
+  location      String?
+  status        String?  @default("Growing")
+  photo         String?
 
-  sales          Sale[]
-  healthRecords  HealthRecord[]
-  matches        Match[]
+  sales         Sale[]
+  healthRecords HealthRecord[]
+  matches       Match[]
 
   @@map("birds")
 }
 
 model Sale {
-  id              Int      @id @default(autoincrement())
-  bird_id         Int      @unique
-  bird            Bird     @relation(fields: [bird_id], references: [bird_id])
-  buyer_name      String
-  buyer_state     String
-  selling_price   Float
-  selling_date    DateTime @default(now())
-  transport_cost  Float    @default(0)
-  other_expenses  Float    @default(0)
-  profit          Float
-  notes           String?
-  created_at      DateTime @default(now())
+  sale_id        Int      @id @default(autoincrement())
+  bird_id        Int?
+  bird           Bird?    @relation(fields: [bird_id], references: [bird_id], onDelete: SetNull)
+  buyer_name     String?
+  buyer_state    String?
+  selling_price  Float?
+  selling_date   DateTime? @db.Date
+  transport_cost Float?   @default(0)
+  other_expenses Float?   @default(0)
+  profit         Float?   @default(0)
+  notes          String?
 
   @@map("sales")
 }
 
 model Expense {
-  id          Int      @id @default(autoincrement())
-  date        DateTime @default(now())
-  category    String   // BirdPurchase, Food, Medicine, Transport, Labour, FarmMaintenance, Other
+  expense_id  Int      @id @default(autoincrement())
+  date        DateTime @db.Date
+  category    String
   amount      Float
   description String?
-  created_at  DateTime @default(now())
 
   @@map("expenses")
 }
 
 model HealthRecord {
-  id               Int       @id @default(autoincrement())
-  bird_id          Int
-  bird             Bird      @relation(fields: [bird_id], references: [bird_id])
-  vaccination_date DateTime
+  health_id        Int       @id @default(autoincrement())
+  bird_id          Int?
+  bird             Bird?     @relation(fields: [bird_id], references: [bird_id], onDelete: Cascade)
+  vaccination_date DateTime? @db.Date
   medicine         String?
-  doctor_name      String?
+  doctor           String?
   notes            String?
-  created_at       DateTime  @default(now())
 
   @@map("health_records")
 }
 
 model Match {
-  id             Int      @id @default(autoincrement())
-  bird_id        Int
-  bird           Bird     @relation(fields: [bird_id], references: [bird_id])
-  match_date     DateTime
-  opponent_type  String?
-  result         String   // Win, Loss, Draw
-  notes          String?
-  created_at     DateTime @default(now())
+  match_id   Int       @id @default(autoincrement())
+  bird_id    Int?
+  bird       Bird?     @relation(fields: [bird_id], references: [bird_id], onDelete: Cascade)
+  match_date DateTime? @db.Date
+  opponent   String?
+  result     String?
+  notes      String?
 
   @@map("matches")
 }
 
 model Buyer {
-  id              Int      @id @default(autoincrement())
+  buyer_id        Int     @id @default(autoincrement())
   name            String
   phone           String?
   state           String?
-  total_purchases Float    @default(0)
-  created_at      DateTime @default(now())
+  total_purchases Float?  @default(0)
 
   @@map("buyers")
 }
